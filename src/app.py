@@ -1,6 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+from datetime import timedelta
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
@@ -10,6 +11,7 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import create_access_token, JWTManager
 
 # from models import Person
 
@@ -30,6 +32,12 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+
+jwt = JWTManager(app)
+
+app.config['JWT_SECRET_KEY'] = '4ebb11e19c2072ce058836ea0f3c285a357712b4a2784ca9d2302478682e18a5'
+app.config['JWT_TIME_EXPIRES'] = timedelta(minutes = 1)
+
 
 # add the admin
 setup_admin(app)

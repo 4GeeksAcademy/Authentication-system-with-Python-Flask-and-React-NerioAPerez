@@ -12,7 +12,8 @@ export const initialStore=()=>{
         title: "Do my homework",
         background: null,
       }
-    ]
+    ], 
+    currentUser: null,
   }
 }
 
@@ -23,7 +24,11 @@ export default function storeReducer(store, action = {}) {
         ...store,
         message: action.payload
       };
-      
+    case 'set_user':
+      return {
+        ...store,
+        currentUser: action.payload
+      };      
     case 'add_task':
 
       const { id,  color } = action.payload
